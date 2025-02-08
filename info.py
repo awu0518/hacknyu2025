@@ -2,28 +2,61 @@ import pandas as pd
 import requests
 import json
 
-def getData(path: str) -> pd.DataFrame:
+import pandas as pd
+import json
+
+def getData(path: str) -> str:
     """
-    Converts a given csv path to a Pandas Dataframe
+    Converts a given csv path to a JSON string with the following format:
+    {
+      "data": [
+          {
+            "date": "02/07/2025",
+            "price": 107.56,
+            "volume": 46082500,
+            "open": 109.13,
+            "high": 109.92,
+            "low": 106.79
+          },
+          ...
+      ]
+    }
+
     Paths:
     https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/amd.csv
     https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv
     https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/capitalone.csv
     https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/alphabetA.csv
 
-    :param path: relative path to a stocks folder csv
-    :return: Pandas DataFrame containing the information about the stock
+    :param path: relative or absolute path to a stocks CSV file.
+    :return: JSON string with the reformatted data.
     """
-
+    # Read the CSV into a DataFrame.
     df = pd.read_csv(path)
-    # Columns with dollar values
-    dollar_columns = ['Close/Last', 'Open', 'High', 'Low']
 
-    # Remove the dollar sign and convert to numeric
+    # Columns that have dollar values (as strings) that we need to clean.
+    dollar_columns = ['Close/Last', 'Open', 'High', 'Low']
     for col in dollar_columns:
         df[col] = df[col].replace('[$,]', '', regex=True).astype(float)
 
-    return df.to_json()
+    # Rename columns to match the desired output keys.
+    df = df.rename(columns={
+        "Date": "date",
+        "Close/Last": "price",
+        "Volume": "volume",
+        "Open": "open",
+        "High": "high",
+        "Low": "low"
+    })
+
+    # Convert the DataFrame to a list of dictionaries.
+    data_records = df.to_dict(orient="records")
+
+    # Wrap the list in a dictionary under the "data" key and convert to JSON.
+    result = {"data": data_records}
+    with open("./tests/tesla.json", 'w') as jsonfile:
+        json.dumps(result, jsonfile, indent=4)
+    return json.dumps(result)
     
 def calculate_rsi(path: str, period=14) -> str:
     """
@@ -74,5 +107,6 @@ def seven_day_moving_average(path: str) -> str:
 
     return df['Close/Last'].rolling(window=7).mean().to_json()
 
-print(calculate_rsi("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
-print(seven_day_moving_average("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
+print(getData("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
+# print(calculate_rsi("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
+# print(seven_day_moving_average("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
