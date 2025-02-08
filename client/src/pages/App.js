@@ -1,22 +1,20 @@
 import './App.css';
+import Graph from '../components/Graph/Graph'
 
 function App() {
-  return (
+  
+  return (<>
+    <div className="money-container">BALANCE</div>
     <div className="App">
       <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Graph />
       </header>
+      <div className="button-container">
+        <p className="buy-button">Buy</p>
+        <p className="no-buy-button">Wait</p>
+      </div>
     </div>
+    </>
   );
 }
 
