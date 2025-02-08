@@ -98,3 +98,25 @@
     transform: rotate(360deg);
   }
 }
+
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+.App-header {
+  position: relative;
+}
+
+.amount-display {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.result-container {
+  margin-top: 20px;
+}
