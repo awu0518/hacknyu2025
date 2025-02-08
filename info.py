@@ -1,8 +1,4 @@
 import pandas as pd
-import requests
-import json
-
-import pandas as pd
 import json
 
 def getData(path: str) -> str:
@@ -54,8 +50,9 @@ def getData(path: str) -> str:
 
     # Wrap the list in a dictionary under the "data" key and convert to JSON.
     result = {"data": data_records}
-    with open("./tests/tesla.json", 'w') as jsonfile:
-        json.dumps(result, jsonfile, indent=4)
+    with open("./tests/amd.json", 'w') as jsonfile:
+        json.dump(result, jsonfile, indent=4)
+
     return json.dumps(result)
     
 def calculate_rsi(path: str, period=14) -> str:
@@ -107,6 +104,6 @@ def seven_day_moving_average(path: str) -> str:
 
     return df['Close/Last'].rolling(window=7).mean().to_json()
 
-print(getData("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
+print(getData("./stocks/amd.csv"))
 # print(calculate_rsi("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
 # print(seven_day_moving_average("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
