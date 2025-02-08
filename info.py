@@ -23,7 +23,7 @@ def getData(path: str) -> pd.DataFrame:
     for col in dollar_columns:
         df[col] = df[col].replace('[$,]', '', regex=True).astype(float)
 
-    return df
+    return df.to_json()
     
 def calculate_rsi(path: str, period=14) -> str:
     """
@@ -55,7 +55,7 @@ def calculate_rsi(path: str, period=14) -> str:
 
     # Calculate RSI
     rsi = 100 - (100 / (1 + rs))
-    return rsi[14:].to_json()
+    return rsi.to_json()
 
 def seven_day_moving_average(path: str) -> str:
     """
@@ -72,7 +72,7 @@ def seven_day_moving_average(path: str) -> str:
     for col in dollar_columns:
         df[col] = df[col].replace('[$,]', '', regex=True).astype(float)
 
-    return df['Close/Last'].rolling(window=7).mean()[14:].to_json()
+    return df['Close/Last'].rolling(window=7).mean().to_json()
 
 print(calculate_rsi("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
 print(seven_day_moving_average("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))

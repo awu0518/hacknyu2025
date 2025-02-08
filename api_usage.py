@@ -28,16 +28,23 @@ api_url = "https://v7e5cm8cd3.execute-api.us-east-1.amazonaws.com/get_moving_ave
 payload = {
     "csv_url": "https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/amd.csv"
 }
-# Define headers specifying that the request body is JSON.
-headers = {
-    "Content-Type": "application/json"
-}
-# Make a POST request to the API endpoint.
 response = requests.post(api_url, json=payload, headers=headers)
-
 # Process the response.
 if response.status_code == 200:
     print("7-Day Moving Average Calculation Successful!")
+    # The API returns a JSON string; parse it to a Python dictionary if needed.
+    result = response.json()
+    print("Response data:", result)
+else:
+    print("Error:", response.status_code)
+    print("Response:", response.text)
+
+
+api_url = "https://mfvqo6rzzj.execute-api.us-east-1.amazonaws.com/get_data"
+response = requests.get(api_url, json=payload, headers=headers)
+# Process the response.
+if response.status_code == 200:
+    print("Data get successfully")
     # The API returns a JSON string; parse it to a Python dictionary if needed.
     result = response.json()
     print("Response data:", result)
