@@ -6,6 +6,8 @@ def getData(path: str) -> pd.DataFrame:
     Paths:
     https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/amd.csv
     https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv
+    https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/capitalone.csv
+    https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/alphabetA.csv
 
     :param path: relative path to a stocks folder csv
     :return: Pandas DataFrame containing the information about the stock
