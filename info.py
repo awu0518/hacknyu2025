@@ -50,8 +50,6 @@ def getData(path: str) -> str:
 
     # Wrap the list in a dictionary under the "data" key and convert to JSON.
     result = {"data": data_records}
-    with open("./tests/amd.json", 'w') as jsonfile:
-        json.dump(result, jsonfile, indent=4)
 
     return json.dumps(result)
     
@@ -85,7 +83,14 @@ def calculate_rsi(path: str, period=14) -> str:
 
     # Calculate RSI
     rsi = 100 - (100 / (1 + rs))
-    return rsi.to_json()
+
+    result = {
+        "data": [
+            {"date": date, "RSI": rsi} for date, rsi in zip(df['Date'], rsi)
+        ]
+    }
+
+    return json.dumps(result)
 
 def seven_day_moving_average(path: str) -> str:
     """
@@ -102,8 +107,16 @@ def seven_day_moving_average(path: str) -> str:
     for col in dollar_columns:
         df[col] = df[col].replace('[$,]', '', regex=True).astype(float)
 
-    return df['Close/Last'].rolling(window=7).mean().to_json()
+    df['7_day_MA'] = df['Close/Last'].rolling(window=7).mean()
 
-print(getData("./stocks/amd.csv"))
+    result = {
+        "data": [
+            {"date": date, "MA": ma} for date, ma in zip(df['Date'], df['7_day_MA'])
+        ]
+    }
+
+    return json.dumps(result)
+
+print(seven_day_moving_average("./stocks/amd.csv"))
 # print(calculate_rsi("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
 # print(seven_day_moving_average("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
