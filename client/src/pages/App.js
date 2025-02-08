@@ -1,10 +1,17 @@
 import './App.css';
 import Graph from '../components/Graph/Graph'
+import { useState, useEffect } from 'react'
 
 function App() {
+  const [balance, setBalance] = useState('')
+
+  useEffect(() => {
+    const bal = localStorage.getItem('money')
+    setBalance(bal)
+  }, [])
   
   return (<>
-    <div className="money-container">BALANCE</div>
+    <div className="money-container">Balance: {balance}</div>
     <div className="App">
       <header className="App-header">
         <Graph />

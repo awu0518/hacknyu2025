@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Home() {
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState(100);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -14,7 +14,8 @@ function Home() {
 
   const handleButtonClick = () => {
     if (parseFloat(amount) > 0) {
-        navigate('/start', { state: { amount } });
+        localStorage.setItem('money', amount)
+        navigate('/app#');
       setError('');
     } else {
       setError('Please enter a valid amount greater than 0.');
@@ -26,7 +27,7 @@ function Home() {
       <div className="input-wrapper">
         <span className="dollar-sign">$</span>
         <input
-          type="text"
+          type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder="Enter amount"

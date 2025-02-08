@@ -4,6 +4,7 @@
   flex-direction: row;
   /* justify-content: space-between;  */
   height: 100vh; 
+  user-select: none;
 }
 
 .App-logo {
