@@ -1,4 +1,6 @@
 import pandas as pd
+import requests
+import json
 
 def getData(path: str) -> pd.DataFrame:
     """
@@ -72,6 +74,5 @@ def seven_day_moving_average(path: str) -> str:
 
     return df['Close/Last'].rolling(window=7).mean()[14:].to_json()
 
-dataframe = getData("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv")
-print(calculate_rsi(dataframe))
-print(seven_day_moving_average(dataframe))
+print(calculate_rsi("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
+print(seven_day_moving_average("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
