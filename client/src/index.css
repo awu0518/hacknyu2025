@@ -6,7 +6,7 @@
   /*======= Colors ========*/
   /*Color mode HSL(hue, saturation, lightness)*/
   --first-color: hsl(353, 100%, 65%);
-  --body-color: #33344f;
+  --body-color: #ffffff;
   --text-color: hsl(244, 16%, 43%);
   --container-color: #fff;
 
@@ -30,6 +30,8 @@
 
   /*======= Border Radius ========*/
   --border-radius: 20px;
+
+  overflow: hidden;
 }
 
 /* Responsive Typography */

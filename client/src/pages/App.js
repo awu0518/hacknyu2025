@@ -1,22 +1,20 @@
 import './App.css';
-import Home from './Home.js';
-import { useState } from 'react';
+import Graph from '../components/Graph/Graph'
 
 function App() {
-  const [amount, setAmount] = useState(null);
-
-  const handleStart = (amount) => {
-    setAmount(amount); 
-    console.log('Amount entered:', amount);
-  };
-
-  return (
+  
+  return (<>
+    <div className="money-container">BALANCE</div>
     <div className="App">
       <header className="App-header">
-        {amount && <p>Amount entered: ${amount}</p>}
-        <Home onStart={handleStart} />
+        <Graph />
       </header>
+      <div className="button-container">
+        <p className="buy-button">Buy</p>
+        <p className="no-buy-button">Wait</p>
+      </div>
     </div>
+    </>
   );
 }
 
