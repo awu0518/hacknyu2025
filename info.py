@@ -3,6 +3,9 @@ import pandas as pd
 def getData(path: str) -> pd.DataFrame:
     """
     Converts a given csv path to a Pandas Dataframe
+    Paths:
+    https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/amd.csv
+    https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv
 
     :param path: relative path to a stocks folder csv
     :return: Pandas DataFrame containing the information about the stock
