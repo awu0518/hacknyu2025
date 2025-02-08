@@ -23,15 +23,22 @@ def getData(path: str) -> pd.DataFrame:
 
     return df
     
-def calculate_rsi(data: pd.DataFrame, period=14) -> str:
+def calculate_rsi(path: str, period=14) -> str:
     """
     Calculate the Relative Strength Index (RSI) for a given dataset.
 
     :param data: Pandas Series of closing prices.
     :return: Pandas Series containing the RSI values.
     """
+    df = pd.read_csv(path)
+    # Columns with dollar values
+    dollar_columns = ['Close/Last', 'Open', 'High', 'Low']
+
+    # Remove the dollar sign and convert to numeric
+    for col in dollar_columns:
+        df[col] = df[col].replace('[$,]', '', regex=True).astype(float)
     # Calculate price changes
-    delta = data['Close/Last'].diff()
+    delta = df['Close/Last'].diff()
 
     # Separate gains and losses
     gain = delta.where(delta > 0, 0)
@@ -46,18 +53,25 @@ def calculate_rsi(data: pd.DataFrame, period=14) -> str:
 
     # Calculate RSI
     rsi = 100 - (100 / (1 + rs))
-    return rsi[14:]
+    return rsi[14:].to_json()
 
-def seven_day_moving_average(data: pd.DataFrame) -> str:
+def seven_day_moving_average(path: str) -> str:
     """
     Calculate the 7 day moving average for a given dataset
 
     :param data: Pandas Series of closing prices.
     :return: Pandas Series containing the moving average, first 6 spots will be NaN as there is not enough info
     """
+    df = pd.read_csv(path)
+    # Columns with dollar values
+    dollar_columns = ['Close/Last', 'Open', 'High', 'Low']
 
-    return data['Close/Last'].rolling(window=7).mean()[14:]
+    # Remove the dollar sign and convert to numeric
+    for col in dollar_columns:
+        df[col] = df[col].replace('[$,]', '', regex=True).astype(float)
 
-dataframe = getData("stocks/tesla.csv")
+    return df['Close/Last'].rolling(window=7).mean()[14:].to_json()
+
+dataframe = getData("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv")
 print(calculate_rsi(dataframe))
 print(seven_day_moving_average(dataframe))
