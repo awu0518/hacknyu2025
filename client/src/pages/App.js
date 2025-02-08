@@ -1,20 +1,20 @@
 import './App.css';
+import Home from './Home.js';
+import { useState } from 'react';
 
 function App() {
+  const [amount, setAmount] = useState(null);
+
+  const handleStart = (amount) => {
+    setAmount(amount); 
+    console.log('Amount entered:', amount);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {amount && <p>Amount entered: ${amount}</p>}
+        <Home onStart={handleStart} />
       </header>
     </div>
   );
