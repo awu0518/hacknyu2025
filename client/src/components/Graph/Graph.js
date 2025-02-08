@@ -2,52 +2,11 @@ import './Graph.css'
 import { useState, useEffect } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'; 
   
-  function Graph() {
-    const [data, setData] = useState([])
-
-    useEffect(() => {
-        const tempdata = generateRechartsStockData()
-        setData(tempdata)
-    }, [])
-
-    function generateRechartsStockData(days = 30, startPrice = 100) {
-        const data = [];
-        let currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - days); // Start from X days ago
-        let price = startPrice;
-        let trendDirection = Math.random() > 0.5 ? 1 : -1; // Random upward/downward trend
-        
-        for (let i = 0; i < days; i++) {
-            // Base fluctuation (-1.5% to +1.5%)
-            const fluctuation = (Math.random() * 0.03 - 0.015) * trendDirection;
-            
-            // Add occasional spikes/dips
-            if (Math.random() < 0.1) { // 10% chance of event
-            price *= (1 + (Math.random() * 0.05 - 0.025)); // ±2.5% event
-            }
-            
-            price = price * (1 + fluctuation);
-            price = Math.round(price * 100) / 100; // Round to 2 decimals
-        
-            data.push({
-            date: new Date(currentDate).toISOString().split('T')[0], // YYYY-MM-DD format
-            price: price,
-            // Optional volume simulation
-            volume: Math.floor(Math.random() * 5000000 + 1000000) 
-            });
-        
-            currentDate.setDate(currentDate.getDate() + 1);
-            
-            // Gradually strengthen the trend
-            trendDirection *= 1.001;
-        }
-        
-        return data;
-    }
-
+function Graph({ data, dataKey }) {
 
     return (
-<ResponsiveContainer width="100%" height={400}>
+<ResponsiveContainer width="100%" height={200}>
+    <div>Something</div>
     <LineChart data={data}>
       {/* XAxis with smaller font */}
       <XAxis
@@ -78,12 +37,16 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
           fontSize: 10, // Individual item text size
           padding: 0
         }}
-        formatter={(value) => [value.toFixed(2), 'Price']} // Compact value display
+          formatter={(value, name) => {
+            if (name === 'price') return [`$${value.toFixed(2)}`, 'Price'];
+            if (name === 'volume') return [value.toLocaleString(), 'Volume'];
+            return [value, name];
+  }}
       />
 
       <Line
         type="monotone"
-        dataKey="price"
+        dataKey={dataKey}
         stroke="#2196F3"
         strokeWidth={4}
         dot={false}
