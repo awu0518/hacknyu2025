@@ -28,7 +28,8 @@ def getNews(stock_name):
         model="chatgpt-4o-latest",
         messages = [
             {"role": "user", 
-             "content": f"Get news articles about {stock_name} from the month of January and provide a brief summary of them."}
+             "content": f"""Get 3 of the most impactful news articles about {stock_name} from the month of January 
+             which could effect their stock in Febuary and just have the titles in a bulleted list."""}
         ]
     )
 
