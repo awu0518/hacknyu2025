@@ -121,3 +121,15 @@
 .result-container {
   margin-top: 20px;
 }
+
+.modal-container {
+  background-color: #ffffff;
+  justify-content: center;
+  text-align: center;
+  width: 1000px;
+  height: 700px;
+  border-radius: 25px;
+  gap: 4rem;
+  padding: 10px;
+  filter: drop-shadow(10px 10px 10px gray);
+}

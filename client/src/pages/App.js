@@ -1,6 +1,7 @@
 import './App.css';
 import Graph from '../components/Graph/Graph'
 import { useState, useEffect } from 'react'
+import Popup from 'reactjs-popup';
 
 function App() {
   const [balance, setBalance] = useState('')
@@ -53,12 +54,18 @@ function App() {
   }
   
   return (<>
-    <div className="money-container">Balance: {balance}</div>
+    <div className="money-container">
+    <Popup trigger={<button className="button"> Open Modal </button>} modal>
+      <div className="modal-container">
+        <Graph data={data} dataKey={"volume"} height={170} name={"RSI"} /> <br></br>
+        <Graph data={generateRechartsStockData()} height={170} name={"Moving Average"} />
+      </div>
+      
+    </Popup>
+    Balance: {balance}</div>
     <div className="App">
       <header className="App-header">
-        <Graph data={data} dataKey={"price"} />
-        <Graph data={data} dataKey={"volume"} />
-        <Graph data={generateRechartsStockData()} />
+        <Graph data={data} dataKey={"price"} height={400} name={"Price"} />
       </header>
       <div className="button-container">
         <p className="buy-button" onClick={handleBuy}>Buy</p>

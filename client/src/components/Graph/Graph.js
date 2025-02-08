@@ -2,11 +2,11 @@ import './Graph.css'
 import { useState, useEffect } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'; 
   
-function Graph({ data, dataKey }) {
+function Graph({ data, dataKey, height, name }) {
 
-    return (
-<ResponsiveContainer width="100%" height={200}>
-    <div>Something</div>
+    return (<>
+        <div className="name-label">{ name }</div>
+<ResponsiveContainer width="90%" height={height}>
     <LineChart data={data}>
       {/* XAxis with smaller font */}
       <XAxis
@@ -53,6 +53,7 @@ function Graph({ data, dataKey }) {
       />
     </LineChart>
   </ResponsiveContainer>
+  </>
     );
   }
   
