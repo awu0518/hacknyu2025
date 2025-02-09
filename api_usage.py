@@ -59,8 +59,6 @@ else:
 api_url = "https://v2zlde1262.execute-api.us-east-1.amazonaws.com/get_analyze"
 payload = {
     "stock_info": "test",
-    "RSI": "test",
-    "SMA": "test",
     "news": "test"
 }
 response = requests.get(api_url, json=payload, headers=headers)
