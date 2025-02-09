@@ -11,12 +11,13 @@ function App() {
   const [company, setCompany] = useState('')
   const [news, setNews] = useState('News')
   const [amount, setAmount] = useState(0)
+  const [analysis, setAnalysis] = useState('')
 
-  const companies = ["amd", "tesla", "capitalone", "alphabetA"]
+  const companies = ["amd", "tesla", "capitalone", "alphabetA", "costco", "expedia"]
 
   const fetchData = async () => {
 
-    const selected = Math.floor(Math.random() * 3)
+    const selected = Math.floor(Math.random() * 6)
     setCompany(companies[selected])
     
     const payload = {
@@ -47,12 +48,13 @@ function App() {
       }
       const clone = structuredClone(reversedArray);
       setOrig(clone)
+      console.log(clone)
 
       reversedArray.splice(reversedArray.length - 5, 5)
 
       setData(reversedArray)
       
-      const res2 = await fetch("https://fkc1fmei3f.execute-api.us-east-1.amazonaws.com/getNews", {
+      const res2 = await fetch("https://fkc1fmei3f.execute-api.us-east-1.amazonaws.com/gn", {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(payload2)
@@ -60,7 +62,7 @@ function App() {
 
       const newsdata = await res2.json()
       console.log(newsdata)
-      setNews(newsdata)
+      setNews(newsdata.news)
 
     } catch (e) {
       console.log(e)
@@ -76,12 +78,41 @@ function App() {
 
   }, [])
 
+  const getAnalyze = async () => {
+    const payload3 = {
+      "stock_info": data,
+      "news": news
+    }
+
+    const headers = {
+      "Content-Type": "application/json"
+    }
+    
+    try {
+      const response = await fetch("https://v2zlde1262.execute-api.us-east-1.amazonaws.com/ga", {
+        method: "POSt", 
+        headers: headers,
+        body: JSON.stringify(payload3)
+      })
+  
+      const analysis = await response.json()
+  
+      console.log(analysis)
+      setAnalysis(analysis.message)
+    } catch (e) {
+      console.log(e)
+    }
+
+  }
+
   const handleBuy = () => {
     if (amount <= balance) {
       const latest = data[data.length - 1].price
       const newest = originalData[originalData.length - 1].price
 
       const prof = (newest / latest) * amount - amount
+
+      getAnalyze()
 
       setBalance((bal) => bal + prof)
       setData(() => originalData)
@@ -92,6 +123,7 @@ function App() {
   const handleNext = () => {
     fetchData()
     setDone(false)
+    setAnalysis('')
   }
 
   const handleWait = () => {
@@ -114,6 +146,7 @@ function App() {
       <header className="App-header">
         <p>{company}</p>
         <Graph data={data} dataKey={"price"} height={400} name={"Price"} />
+        <div><p>{ analysis }</p></div>
       </header>
       <div className="button-container">
         {!done &&
