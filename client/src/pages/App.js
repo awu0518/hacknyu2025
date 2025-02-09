@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react'
 import Popup from 'reactjs-popup';
 
 function App() {
-  const [balance, setBalance] = useState('')
+  const [balance, setBalance] = useState(0)
   const [data, setData] = useState([])
   const [originalData, setOrig] = useState([])
   const [done, setDone] = useState(false)
   const [company, setCompany] = useState('')
+  const [news, setNews] = useState('News')
+  const [amount, setAmount] = useState(0)
 
   const companies = ["amd", "tesla", "capitalone", "alphabetA"]
 
@@ -21,6 +23,10 @@ function App() {
       "csv_url": `https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/${companies[selected]}.csv`
     }
 
+    const payload2 = {
+      "stock_name": companies[selected]
+    }
+
     const headers = {
       "Content-Type": "application/json"
     }
@@ -31,6 +37,7 @@ function App() {
         headers: headers,
         body: JSON.stringify(payload)
       })
+
       const js = await res.json()
 
       let array = js.data
@@ -44,6 +51,17 @@ function App() {
       reversedArray.splice(reversedArray.length - 5, 5)
 
       setData(reversedArray)
+      
+      const res2 = await fetch("https://fkc1fmei3f.execute-api.us-east-1.amazonaws.com/getNews", {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(payload2)
+      })
+
+      const newsdata = await res2.json()
+      console.log(newsdata)
+      setNews(newsdata)
+
     } catch (e) {
       console.log(e)
     }
@@ -53,21 +71,30 @@ function App() {
 
     fetchData()
 
-    const bal = localStorage.getItem('money')
+    const bal = parseInt(localStorage.getItem('money'))
     setBalance(bal)
 
   }, [])
 
   const handleBuy = () => {
-    const latest = data[data.length - 1].price
-    const newest = originalData[originalData.length - 1].price
+    if (amount <= balance) {
+      const latest = data[data.length - 1].price
+      const newest = originalData[originalData.length - 1].price
 
-    setBalance((bal) => bal - (latest - newest))
-    setData(() => originalData)
-    setDone(true)
+      const prof = (newest / latest) * amount - amount
+
+      setBalance((bal) => bal + prof)
+      setData(() => originalData)
+      setDone(true)
+    } 
   }
 
   const handleNext = () => {
+    fetchData()
+    setDone(false)
+  }
+
+  const handleWait = () => {
     fetchData()
     setDone(false)
   }
@@ -77,19 +104,32 @@ function App() {
     <Popup trigger={<button className="button"> Open Modal </button>} modal>
       <div className="modal-container">
         <Graph data={data} dataKey={"volume"} height={170} name={"RSI"} /> <br></br>
-        <Graph data={data} dataKey={"7_day_ma"} height={170} name={"7 Day MA"} />
+        <Graph data={data} dataKey={"7_day_ma"} height={170} name={"7 Day MA"} /> 
+        <p>{ news }</p>
       </div>
       
     </Popup>
-    Balance: {balance}</div>
+    Balance: { balance.toFixed(2) }</div>
     <div className="App">
       <header className="App-header">
         <p>{company}</p>
         <Graph data={data} dataKey={"price"} height={400} name={"Price"} />
       </header>
       <div className="button-container">
+        {!done &&
+          <div className="input-wrapper">
+            <span className="dollar-sign">$</span>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Enter amount"
+              className="amount-input"
+            />
+          </div>
+        }
         <p className="buy-button" onClick={handleBuy}>Buy</p>
-        <p className="no-buy-button">Wait</p>
+        <p className="no-buy-button" onClick={handleWait}>Wait</p>
         { done && <p className="next-button" onClick={handleNext}>Next </p>}
       </div>
     </div>
