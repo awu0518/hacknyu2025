@@ -24,9 +24,18 @@ def getMessage(stock_info, RSI, SMA, news):
     return msg
 
 def getNews(stock_name):
+    OPENAI_API_KEY = os.environ.get("sonar")
+    client = OpenAI(api_key=OPENAI_API_KEY, base_url="https://api.perplexity.ai")
     completion = client.chat.completions.create(
-        model="chatgpt-4o-latest",
+        model="sonar-pro",
         messages = [
+            {
+                "role": "system",
+                "content": (
+                    "You are an artificial intelligence assistant and you need to "
+                    "engage in a helpful, detailed, polite conversation with a user."
+                ),
+            },
             {"role": "user", 
              "content": f"""Get 3 of the most impactful news articles about {stock_name} from the month of January 
              which could effect their stock in Febuary and just have the titles in a bulleted list."""}
@@ -36,3 +45,5 @@ def getNews(stock_name):
     msg = completion.choices[0].message.content
     # print(msg)
     return msg
+
+print(getNews("tesla"))

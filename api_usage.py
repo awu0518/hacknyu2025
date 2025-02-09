@@ -42,8 +42,8 @@ else:
 
 
 # get all data
-api_url = "https://mfvqo6rzzj.execute-api.us-east-1.amazonaws.com/get_data"
-response = requests.get(api_url, json=payload, headers=headers)
+api_url = "https://mfvqo6rzzj.execute-api.us-east-1.amazonaws.com/gd"
+response = requests.post(api_url, json=payload, headers=headers)
 # Process the response.
 if response.status_code == 200:
     print("Data get successfully")
@@ -66,7 +66,7 @@ payload = {
 response = requests.get(api_url, json=payload, headers=headers)
 # Process the response.
 if response.status_code == 200:
-    print("Data get successfully")
+    print("Analyze get successfully")
     # The API returns a JSON string; parse it to a Python dictionary if needed.
     result = response.json()
     print("Response data:", result)
@@ -74,4 +74,18 @@ else:
     print("Error:", response.status_code)
     print("Response:", response.text)
 
-
+# get relative news
+api_url = "https://fkc1fmei3f.execute-api.us-east-1.amazonaws.com/getNews"
+payload = {
+    "stock_name": "tesla"
+}
+response = requests.get(api_url, json=payload, headers=headers)
+# Process the response.
+if response.status_code == 200:
+    print("News get successfully")
+    # The API returns a JSON string; parse it to a Python dictionary if needed.
+    result = response.json()
+    print("Response data:", result)
+else:
+    print("Error:", response.status_code)
+    print("Response:", response.text)
