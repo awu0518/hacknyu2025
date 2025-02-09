@@ -3,6 +3,11 @@ import Graph from '../components/Graph/Graph'
 import { useState, useEffect } from 'react'
 import Popup from 'reactjs-popup';
 
+const getMinMax = (data, key) => {
+  const values = data.map(item => item[key]);
+  return [Math.min(...values), Math.max(...values)];
+};
+
 function App() {
   const [balance, setBalance] = useState(0)
   const [data, setData] = useState([])
@@ -12,8 +17,10 @@ function App() {
   const [news, setNews] = useState('News')
   const [amount, setAmount] = useState(0)
   const [analysis, setAnalysis] = useState('')
+  const [minPrice, maxPrice] = getMinMax(data, "price");
 
   const companies = ["amd", "tesla", "capitalone", "alphabetA", "costco", "expedia"]
+  const name_companies = ["AMD", "Tesla", "Capital One", "AlphabetA", "Costco", "Expedia"]
 
   const fetchData = async () => {
 
@@ -67,6 +74,8 @@ function App() {
     } catch (e) {
       console.log(e)
     }
+
+    
   }
 
   useEffect(() => {
@@ -133,22 +142,21 @@ function App() {
   
   return (<>
     <div className="money-container">
-    <Popup trigger={<button className="button"> Open Modal </button>} modal>
-      <div className="modal-container">
-        <Graph data={data} dataKey={"volume"} height={170} name={"RSI"} /> <br></br>
-        <Graph data={data} dataKey={"7_day_ma"} height={170} name={"7 Day MA"} /> 
-        <p>{ news }</p>
-      </div>
-      
-    </Popup>
-    Balance: { balance.toFixed(2) }</div>
+    
+   </div>
     <div className="App">
+      
       <header className="App-header">
-        <p>{company}</p>
-        <Graph data={data} dataKey={"price"} height={400} name={"Price"} />
-        <div><p className="analysis">Analysis: { analysis }</p></div>
+      <p>{name_companies[companies.indexOf(company)]}</p>
+        <div className="graph-container">
+          <Graph data={data} dataKey={"price"} height={400} name={"Price"} domain={[minPrice, maxPrice]}/>
+          
+          </div>
+          <div> {done && <p className="analysis">Analysis: { analysis }</p> }</div>
       </header>
-      <div className="button-container">
+      
+      <div className="container">
+      <p style={{ textAlign: 'left' }} >Balance: { balance.toFixed(2) } </p>
         {!done &&
           <div className="input-wrapper">
             <span className="dollar-sign">$</span>
@@ -161,8 +169,18 @@ function App() {
             />
           </div>
         }
-        <p className="buy-button" onClick={handleBuy}>Buy</p>
-        <p className="no-buy-button" onClick={handleWait}>Wait</p>
+        {!done && <Popup trigger={<button className="info-button"> More Information </button>} modal>
+          <div className="modal-container">
+            <Graph data={data} dataKey={"volume"} height={170} name={"RSI"} /> <br></br>
+            <Graph data={data} dataKey={"7_day_ma"} height={170} name={"7 Day MA"} /> 
+            <p>{ news }</p>
+          </div>
+          
+        </Popup>}
+        <div className="in-line-container"> 
+        {!done && <p className="buy-button" onClick={handleBuy}>Buy</p>}
+        { !done &&<p className="no-buy-button" onClick={handleWait}>Wait</p>}
+        </div>
         { done && <p className="next-button" onClick={handleNext}>Next </p>}
       </div>
     </div>
