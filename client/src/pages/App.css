@@ -23,23 +23,20 @@
   }
 } */
 
-.button-container {
-  /* flex: 1;  */
-  font-size: 40px;
+.elem-container {
   min-width: 20%; 
   margin-left: auto;
   margin-right: 15%;
   margin-bottom: 25%;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4rem; /* Space between buttons */
+  gap: 1.5rem; /* Space between buttons */
 }
 
 .buy-button {
   background: #000000;
-  border-radius: 25px;
+  border-radius: 4px;
   width: 125px;
   color:#ffffff;
   transition: all 0.3s ease; /* Transition all properties */
@@ -48,7 +45,16 @@
 
 .no-buy-button {
   background-color: #525252;
-  border-radius: 25px;
+  border-radius: 4px;
+  width: 125px;
+  color:#ffffff;
+  transition: all 0.3s ease; /* Transition all properties */
+  filter: drop-shadow(0 0 0 transparent); /* Initial state */
+}
+
+.sell-button {
+  background: rgb(66, 68, 74);
+  border-radius: 4px;
   width: 125px;
   color:#ffffff;
   transition: all 0.3s ease; /* Transition all properties */
@@ -56,6 +62,13 @@
 }
 
 .buy-button:hover {
+  filter: drop-shadow(10px 10px 10px gray);
+  cursor: pointer;
+  transform: rotate(6deg);
+  transition-duration: filter 0.3s ease;
+}
+
+.sell-button:hover {
   filter: drop-shadow(10px 10px 10px gray);
   cursor: pointer;
   transform: rotate(6deg);
@@ -132,4 +145,48 @@
   gap: 4rem;
   padding: 10px;
   filter: drop-shadow(10px 10px 10px gray);
+}
+
+
+.in-line-buttons {
+  display: flex; /* Use Flexbox for horizontal layout */
+  font-size: 30px;
+  flex-direction: row; /* Align buttons horizontally */
+  gap: 10px; /* Space between buttons */
+  align-items: center; /* Vertically center buttons */
+}
+
+.info-button{
+  background-color: blue;
+  border-radius: 4px;
+  width: 300px;
+  height: 50px;
+  font-size: 24px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+.graph-container {
+  width: 100%; /* Ensure it takes full width */
+  height: 450px; /* Set a fixed height for testing */
+  background-color: #f0f0f0; /* Debugging background */
+  border: 2px solid gray; /* Debugging border */
+  position: relative; /* Required for z-index */
+  z-index: 10; /* Bring to the front */
+}
+
+.balance-info {
+  font-size: 24px;
+  color: #000000;
+  text-align: left;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 2px solid #575757;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 300px;
 }
