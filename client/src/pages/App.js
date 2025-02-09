@@ -97,7 +97,7 @@ function App() {
   
       const analysis = await response.json()
   
-      console.log(analysis)
+      // console.log(analysis)
       setAnalysis(analysis.message)
     } catch (e) {
       console.log(e)
@@ -146,7 +146,7 @@ function App() {
       <header className="App-header">
         <p>{company}</p>
         <Graph data={data} dataKey={"price"} height={400} name={"Price"} />
-        <div><p>{ analysis }</p></div>
+        <div><p className="analysis">Analysis: { analysis }</p></div>
       </header>
       <div className="button-container">
         {!done &&

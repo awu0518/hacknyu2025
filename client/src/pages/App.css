@@ -149,3 +149,8 @@
   padding: 10px;
   filter: drop-shadow(10px 10px 10px gray);
 }
+
+.analysis {
+  font-size: 14px;
+  color:#000000;
+}
