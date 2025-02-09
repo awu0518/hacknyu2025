@@ -35,6 +35,9 @@ def getData(path: str) -> str:
     for col in dollar_columns:
         df[col] = df[col].replace('[$,]', '', regex=True).astype(float)
 
+    df["RSI"] = calculate_rsi(path)
+    df["7_day_MA"] = seven_day_moving_average(path)
+
     # Rename columns to match the desired output keys.
     df = df.rename(columns={
         "Date": "date",
@@ -42,7 +45,9 @@ def getData(path: str) -> str:
         "Volume": "volume",
         "Open": "open",
         "High": "high",
-        "Low": "low"
+        "Low": "low",
+        "RSI": "rsi",
+        "7_day_MA": "7_day_ma"
     })
 
     # Convert the DataFrame to a list of dictionaries.
@@ -50,6 +55,9 @@ def getData(path: str) -> str:
 
     # Wrap the list in a dictionary under the "data" key and convert to JSON.
     result = {"data": data_records}
+    
+    with open("./tests/amd.json", 'w') as json_file:
+        json.dump(result, json_file, indent=4)
 
     return json.dumps(result)
     
@@ -84,13 +92,7 @@ def calculate_rsi(path: str, period=14) -> str:
     # Calculate RSI
     rsi = 100 - (100 / (1 + rs))
 
-    result = {
-        "data": [
-            {"date": date, "RSI": rsi} for date, rsi in zip(df['Date'], rsi)
-        ]
-    }
-
-    return json.dumps(result)
+    return rsi
 
 def seven_day_moving_average(path: str) -> str:
     """
@@ -109,14 +111,8 @@ def seven_day_moving_average(path: str) -> str:
 
     df['7_day_MA'] = df['Close/Last'].rolling(window=7).mean()
 
-    result = {
-        "data": [
-            {"date": date, "MA": ma} for date, ma in zip(df['Date'], df['7_day_MA'])
-        ]
-    }
+    return df['7_day_MA']
 
-    return json.dumps(result)
-
-print(seven_day_moving_average("./stocks/amd.csv"))
+print(getData("./stocks/amd.csv"))
 # print(calculate_rsi("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
 # print(seven_day_moving_average("https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/tesla.csv"))
