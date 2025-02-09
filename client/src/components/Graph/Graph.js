@@ -2,7 +2,7 @@ import './Graph.css'
 import { useState, useEffect } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'; 
   
-function Graph({ data, dataKey, height, name }) {
+function Graph({ data, dataKey, height, name, domain}) {
 
     return (<>
         <div className="name-label">{ name }</div>
@@ -21,6 +21,7 @@ function Graph({ data, dataKey, height, name }) {
       <YAxis
         tick={{ fontSize: 10 }} // Reduced from default 12
         width={80} // Prevent label truncation
+        domain={domain || ["auto", "auto"]}  // Use the passed domain or default to "auto"
       />
 
       {/* Compact Tooltip */}

@@ -23,23 +23,23 @@
   }
 } */
 
-.button-container {
+.container {
   /* flex: 1;  */
-  font-size: 40px;
+  font-size: 30px;
   min-width: 20%; 
   margin-left: auto;
   margin-right: 15%;
-  margin-bottom: 25%;
+  margin-bottom: 15%;
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4rem; /* Space between buttons */
+  gap: 2rem; /* Space between buttons */
 }
 
 .buy-button {
   background: #000000;
-  border-radius: 25px;
+  border-radius: 4px;
   width: 125px;
   color:#ffffff;
   transition: all 0.3s ease; /* Transition all properties */
@@ -48,7 +48,7 @@
 
 .no-buy-button {
   background-color: #525252;
-  border-radius: 25px;
+  border-radius: 4px;
   width: 125px;
   color:#ffffff;
   transition: all 0.3s ease; /* Transition all properties */
@@ -71,7 +71,7 @@
 
 .next-button {
   background-color: #1ecf1e;
-  border-radius: 25px;
+  border-radius: 4px;
   width: 125px;
   color:#ffffff;
   transition: all 0.3s ease; /* Transition all properties */
@@ -153,4 +153,33 @@
 .analysis {
   font-size: 14px;
   color:#000000;
+}
+
+.info-button{
+  background-color: blue;
+  border-radius: 4px;
+  width: 300px;
+  height: 50px;
+  font-size: 24px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+.in-line-buttons {
+  display: flex; /* Use Flexbox for horizontal layout */
+  font-size: 30px;
+  text-align: center;
+  flex-direction: row; /* Align buttons horizontally */
+  gap: 20px; /* Space between buttons */
+  align-items: center; /* Vertically center buttons */
+}
+
+.graph-container {
+  width: 100%; /* Ensure it takes full width */
+  height: 450px; /* Set a fixed height for testing */
+  background-color: #f0f0f0; /* Debugging background */
+  border: 2px solid gray; /* Debugging border */
+  position: relative; /* Required for z-index */
+  z-index: 10; /* Bring to the front */
 }
