@@ -40,6 +40,7 @@ function Graph({ data, dataKey, height, name }) {
           formatter={(value, name) => {
             if (name === 'price') return [`$${value.toFixed(2)}`, 'Price'];
             if (name === 'volume') return [value.toLocaleString(), 'Volume'];
+            if (name === '7_day_ma') return [value.toLocaleString(), '7 Day MA']
             return [value, name];
   }}
       />

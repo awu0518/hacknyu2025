@@ -69,6 +69,22 @@
   transition-duration: filter 0.3s ease;
 }
 
+.next-button {
+  background-color: #1ecf1e;
+  border-radius: 25px;
+  width: 125px;
+  color:#ffffff;
+  transition: all 0.3s ease; /* Transition all properties */
+  filter: drop-shadow(0 0 0 transparent); /* Initial state */
+}
+
+.next-button:hover {
+  filter: drop-shadow(10px 10px 10px gray);
+  cursor: pointer;
+  transform: rotate(6deg);
+  transition-duration: filter 0.3s ease;
+}
+
 .App-header {
   /* flex: 2; */
   background-color: #ffffff;

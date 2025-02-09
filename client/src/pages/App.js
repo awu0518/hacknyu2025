@@ -5,52 +5,71 @@ import Popup from 'reactjs-popup';
 
 function App() {
   const [balance, setBalance] = useState('')
-  const [data, setData] = useState(generateRechartsStockData())
+  const [data, setData] = useState([])
+  const [originalData, setOrig] = useState([])
+  const [done, setDone] = useState(false)
+  const [company, setCompany] = useState('')
 
-  function generateRechartsStockData(days = 30, startPrice = 100) {
-      const data = [];
-      let currentDate = new Date();
-      currentDate.setDate(currentDate.getDate() - days); // Start from X days ago
-      let price = startPrice;
-      let trendDirection = Math.random() > 0.5 ? 1 : -1; // Random upward/downward trend
-      
-      for (let i = 0; i < days; i++) {
-          // Base fluctuation (-1.5% to +1.5%)
-          const fluctuation = (Math.random() * 0.03 - 0.015) * trendDirection;
-          
-          // Add occasional spikes/dips
-          if (Math.random() < 0.1) { // 10% chance of event
-          price *= (1 + (Math.random() * 0.05 - 0.025)); // ±2.5% event
-          }
-          
-          price = price * (1 + fluctuation);
-          price = Math.round(price * 100) / 100; // Round to 2 decimals
-      
-          data.push({
-          date: new Date(currentDate).toISOString().split('T')[0], // YYYY-MM-DD format
-          price: price,
-          // Optional volume simulation
-          volume: Math.floor(Math.random() * 5000000 + 1000000) 
-          });
-      
-          currentDate.setDate(currentDate.getDate() + 1);
-          
-          // Gradually strengthen the trend
-          trendDirection *= 1.001;
+  const companies = ["amd", "tesla", "capitalone", "alphabetA"]
+
+  const fetchData = async () => {
+
+    const selected = Math.floor(Math.random() * 3)
+    setCompany(companies[selected])
+    
+    const payload = {
+      "csv_url": `https://hacknyu2025lkjyoe.s3.us-east-1.amazonaws.com/${companies[selected]}.csv`
+    }
+
+    const headers = {
+      "Content-Type": "application/json"
+    }
+
+    try {
+      const res = await fetch("https://mfvqo6rzzj.execute-api.us-east-1.amazonaws.com/gd", {
+        method: 'POST', 
+        headers: headers,
+        body: JSON.stringify(payload)
+      })
+      const js = await res.json()
+
+      let array = js.data
+      let reversedArray = [];
+      for (let i = array.length - 1; i >= 0; i--) {
+          reversedArray.push(array[i]);
       }
-      
-      return data;
+      const clone = structuredClone(reversedArray);
+      setOrig(clone)
+
+      reversedArray.splice(reversedArray.length - 5, 5)
+
+      setData(reversedArray)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   useEffect(() => {
+
+    fetchData()
+
     const bal = localStorage.getItem('money')
-    const tempdata = generateRechartsStockData()
-    setData(tempdata)
     setBalance(bal)
+
   }, [])
 
   const handleBuy = () => {
-    setData(() => generateRechartsStockData())
+    const latest = data[data.length - 1].price
+    const newest = originalData[originalData.length - 1].price
+
+    setBalance((bal) => bal - (latest - newest))
+    setData(() => originalData)
+    setDone(true)
+  }
+
+  const handleNext = () => {
+    fetchData()
+    setDone(false)
   }
   
   return (<>
@@ -58,18 +77,20 @@ function App() {
     <Popup trigger={<button className="button"> Open Modal </button>} modal>
       <div className="modal-container">
         <Graph data={data} dataKey={"volume"} height={170} name={"RSI"} /> <br></br>
-        <Graph data={generateRechartsStockData()} height={170} name={"Moving Average"} />
+        <Graph data={data} dataKey={"7_day_ma"} height={170} name={"7 Day MA"} />
       </div>
       
     </Popup>
     Balance: {balance}</div>
     <div className="App">
       <header className="App-header">
+        <p>{company}</p>
         <Graph data={data} dataKey={"price"} height={400} name={"Price"} />
       </header>
       <div className="button-container">
         <p className="buy-button" onClick={handleBuy}>Buy</p>
         <p className="no-buy-button">Wait</p>
+        { done && <p className="next-button" onClick={handleNext}>Next </p>}
       </div>
     </div>
     </>
