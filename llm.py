@@ -20,7 +20,7 @@ def getMessage(stock_info, RSI, SMA, news):
     )
 
     msg = completion.choices[0].message.content
-    print(msg)
+    # print(msg)
     return msg
 
 def getNews(stock_name):
@@ -34,5 +34,5 @@ def getNews(stock_name):
     )
 
     msg = completion.choices[0].message.content
-    print(msg)
+    # print(msg)
     return msg
