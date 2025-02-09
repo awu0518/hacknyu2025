@@ -7,14 +7,14 @@ load_dotenv(".env")
 OPENAI_API_KEY = os.environ.get("OPENAI")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-def getMessage(stock_info, RSI, SMA, news):
+def getMessage(stock_info, news):
     completion = client.chat.completions.create(
         model="chatgpt-4o-latest",
         messages = [
             {"role": "user", 
-             "content": f"""Given this csv about a certain companies stock {stock_info}, RSI {RSI}, SMA {SMA},
-                        and provided news articles {news}. Only look at the values from the month before the most 
-                        recent date from the csv. Explain why the stock price is going up or down in the next month.
+             "content": f"""Given this json about a certain company's ock info, RSI, and MA {stock_info},
+                        and provided news articles {news} for January. Only look at the values from 01/02 to 01/31. 
+                        Explain the price difference from 02/07 from 01/31 only from the information provided.
              """}
         ]
     )
