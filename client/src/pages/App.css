@@ -144,7 +144,7 @@
   border-radius: 25px;
   gap: 4rem;
   padding: 10px;
-  filter: drop-shadow(10px 10px 10px gray);
+  
 }
 
 
@@ -190,3 +190,27 @@
   overflow: hidden;
   width: 300px;
 }
+
+.gameover-container {
+  background-color: #ffffff;
+  justify-content: center;
+  text-align: center;
+  width: 300px;
+  height: auto;
+  border-radius: 25px;
+  gap: 1.5rem;
+  padding: 10px;
+}
+
+
+.gameover-popup .gameover-container {
+  background-color: #ffffff;
+  justify-content: center;
+  text-align: center;
+  width: 300px;
+  height: auto;
+  border-radius: 15px;
+  padding: 20px;
+  gap: 1.5rem;
+}
+
