@@ -61,7 +61,7 @@ payload = {
     "stock_info": "test",
     "news": "test"
 }
-response = requests.get(api_url, json=payload, headers=headers)
+response = requests.post(api_url, json=payload, headers=headers)
 # Process the response.
 if response.status_code == 200:
     print("Analyze get successfully")
@@ -77,7 +77,7 @@ api_url = "https://fkc1fmei3f.execute-api.us-east-1.amazonaws.com/getNews"
 payload = {
     "stock_name": "tesla"
 }
-response = requests.get(api_url, json=payload, headers=headers)
+response = requests.post(api_url, json=payload, headers=headers)
 # Process the response.
 if response.status_code == 200:
     print("News get successfully")
